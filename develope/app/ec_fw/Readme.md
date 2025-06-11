@@ -19,10 +19,12 @@ zephyr_3.2.0\zephyr\zephyr-env.cmd
 west build -b mec1723_n1x develope\app\ec_fw
 
 # west build -p -b mec1723_n1x develope\app\ec_fw -DBOARD_ROOT="C:\Users\Andy\Desktop\app_mplab\develope\app\ec_fw"
+
+python Tools\spi_image_trim_out\generating_binaries.py build\zephyr\spi_image.bin
 ```
 
 ## Flash
 ```bash
 DpCmd.exe -d
-DpCmd.exe -u build\zephyr\spi_image.bin
+DpCmd.exe -uprimary_image.bin -a 0x4000 -l 0x7E000
 ```
