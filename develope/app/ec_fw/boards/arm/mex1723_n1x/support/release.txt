@@ -1,0 +1,28 @@
+﻿Release Notes for the carlsbad  SPI Image generator 
+=========================================
+Tool Name       : Carlsbad SPI_image_gen_KHB 
+Tool Label      : Carlsbad_A1_SPI_IMAGE_GEN_KHB_build_0400
+Tool Version    : CARLSBAD_A1_SPI_GEN Version 5.0 07-03-2023 
+
+Carslbad SPI Image Generator configuration file 
+				  spi cfg.txt is respective to the 
+				  Tag0/1 of the EC_FW 
+
+Tool Version 5 : Bug Fix w.r.t to the second Key hash blob location parameter 
+				in the spi_cfg.ini/txt
+				 To copy the KHB into the INT SPI image.
+
+Tool Version 4 : Bug Fix w..r.t to OTP calcualtion of the KHB 
+
+Tool Version 3 : Key Hash blob , Header /Fw binary along with the spi image and KHB section in the spi_cfg
+
+					
+Disclaimer		: This tool is simple utility for reference and draft release.
+				  This tool has been tested with minimum use cases and not tested 
+                  with all possible different input configuration combinations.
+                  This tool can be used for sample reference and cannot consider 
+                  as full tested tool.
+				  Customers can modify as per need.                 				 
+¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+                                E.N.D  O.F  D.O.C.U.M.E.N.T
+¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
