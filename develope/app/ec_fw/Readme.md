@@ -18,7 +18,7 @@ zephyr_3.2.0\zephyr\zephyr-env.cmd
 ```bash
 west build -b mec1723_n1x develope\app\ec_fw
 
-# west build -p -b mec1723_n1x develope\app\ec_fw -DBOARD_ROOT="C:\Users\Andy\Desktop\app_mplab\develope\app\ec_fw"
+# west build -p -b mec1723_n1x develope\app\ec_fw -DBOARD_ROOT="D:\Andy\Desktop\MCHP\app_mplab\develope\modules"
 
 python Tools\spi_image_trim_out\generating_binaries.py build\zephyr\spi_image.bin
 ```
