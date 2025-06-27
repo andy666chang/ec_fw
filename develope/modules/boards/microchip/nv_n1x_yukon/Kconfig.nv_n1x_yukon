@@ -1,0 +1,6 @@
+# Copyright (c) 2024, Microchip Technology Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_NV_N1X_YUKON
+	bool "NVDIA MEC1723 N1X YUKON board"
+	select SOC_MEC172X_NSZ
