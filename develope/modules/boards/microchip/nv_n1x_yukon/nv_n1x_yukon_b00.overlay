@@ -84,3 +84,22 @@
 		};
 	};
 };
+
+&pcr {
+	// xtal-single-ended;
+	// internal-osc-disable;
+
+	/* debug only, not using 32KHZ_IN pin */
+	// pinctrl-0 = <&tst_clk_out_gpio060 &clk_32khz_out_gpio221>;
+	pinctrl-0 = <&tst_clk_out_gpio060>;
+
+	/* 32KHZ_IN is a clock source and no debug */
+	/* pinctrl-0 = <&clk_32khz_in_gpio165>; */
+
+	/* 32KHZ_IN is a clock source with debug */
+	/* pinctrl-0 = <&clk_32khz_in_gpio165
+			&tst_clk_out_gpio060
+			&clk_32khz_out_gpio221>;
+	*/
+	pinctrl-names = "default";
+};
