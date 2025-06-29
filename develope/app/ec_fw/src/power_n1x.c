@@ -2,7 +2,7 @@
  * @Author: andy.chang
  * @Date: 2025-06-29 17:06:01
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-06-29 19:05:00
+ * @Last Modified time: 2025-06-29 19:32:50
  */
 
 #include <errno.h>
@@ -63,6 +63,11 @@ MCHP_GPIO_DECLARE(drvvbus_en);
 #endif
 MCHP_GPIO_DECLARE(vqps_ext_en);
 MCHP_GPIO_DECLARE(ovrm_en);
+MCHP_GPIO_DECLARE(vtr2_thermtrip);
+
+static int power_on(void);
+static int power_off(void);
+static int _power_off(k_timeout_t delay);
 
 static int power_on(void) {
     int ret;
@@ -123,6 +128,89 @@ static int power_on(void) {
     // espihub_add_warn_handler(ESPIHUB_BUS_RESET, espi_bus_reset_handler);
 
     LOG_WRN("Power sequence Finish!");
+
+    return ret;
+}
+
+static int power_off(void) {
+    int ret = 0;
+
+    LOG_WRN("%s start", __func__);
+
+    // Pull down THERMTRIP_N -> Wait 300us -> Pull up THERMTRIP_N
+    gpio_pin_configure_dt(&vtr2_thermtrip, GPIO_OUTPUT_LOW | GPIO_OPEN_DRAIN);
+    k_sleep(K_USEC(300));
+    gpio_pin_configure_dt(&vtr2_thermtrip, GPIO_INPUT | GPIO_INT_EDGE_FALLING);
+
+    // Wait 100ms
+    k_sleep(K_MSEC(100));
+
+	// Same as "_power_off"
+	_power_off(K_MSEC(0));
+
+    LOG_WRN("%s end", __func__);
+    return ret;
+}
+
+static int _power_off(k_timeout_t delay) {
+    int ret = 0;
+
+    /* 2: wait EC_PMIC_PWR_GD low */
+    MCHP_GPIO_WAIT(&pmic_pg, 0);
+
+    /* 4: drive VTR3_SYSRSTB low */
+    MCHP_GPIO_SET(&pmic_rsmrst, 0);
+
+#ifndef CONFIG_MEC1723_N1X_D_P
+	k_sleep(delay);
+    /* 5: write EC_DP12V_EN low */
+    MCHP_GPIO_SET(&dp12v_en, 0);
+
+    /* 6: write EC_DRVVBUS_EN low */
+    MCHP_GPIO_SET(&drvvbus_en, 0);
+#endif
+
+    /* 7: write EC_VQPS_EXT_EN low */
+    MCHP_GPIO_SET(&vqps_ext_en, 0);
+
+	/* 8: write EC_OVRM_EN_N high to disable */
+	MCHP_GPIO_SET(&ovrm_en, 1);
+	
+    /* 9: drive EC_AOVCC5V_EN low */
+    MCHP_GPIO_SET(&ao_5v_en, 0);
+
+    /* 10: write EC_PR3V3_EN low */
+    MCHP_GPIO_SET(&ao_pr3v3_en, 0);
+
+    /* 11: wait EC_AOVCC5V_PG low */
+    MCHP_GPIO_WAIT(&ao_5v_pg, 0);
+
+    /* 12: wait EC_VUSB_5V_TPC_PG low */
+    MCHP_GPIO_WAIT(&vusb_5v_tpc_pg, 0);
+
+    /* 13: wait EC_PR3V3_PG low */
+    MCHP_GPIO_WAIT(&ao_pr3v3_pg, 0);
+
+    /* 14: wait VIO_12_USB2_VDD1_EN low */
+    MCHP_GPIO_WAIT(&vio12_usb2_vdd1_en, 0);
+
+    /* 15: wait EC_VIO_12_USB2_VDD1_PG low */
+    MCHP_GPIO_WAIT(&vio12_usb2_vdd1_pg, 0);
+
+    /* 16: wait GPU_VR_PGOOD low */
+    MCHP_GPIO_WAIT(&gpu_vr_pg, 0);
+
+    /* 17: wait VIO_18_VDD2L_EN low */
+    MCHP_GPIO_WAIT(&vio18_vdd2l_en, 0);
+
+    /* 18: wait EC_VIO_18_VDD2L_PG low */
+    MCHP_GPIO_WAIT(&vio18_vdd2l_pg, 0);
+
+    /* 19: drive EC_AO_3V3_1V8_1V2_EN low */
+    MCHP_GPIO_SET(&ao_3v3_1v8_1v2_en, 0);
+
+    /* 20: wait EC_AO1V8_AO1V2_PG low */
+    MCHP_GPIO_WAIT(&ao_1v8_1v2_pg, 0);
 
     return ret;
 }

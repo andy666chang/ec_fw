@@ -66,14 +66,21 @@
 		dp12v_en: dp12v_en {
 			gpios = <MCHP_GPIO_DECODE_033 GPIO_ACTIVE_HIGH>;
 		};
+
 		drvvbus_en: drvvbus_en {
 			gpios = <MCHP_GPIO_DECODE_205 GPIO_ACTIVE_HIGH>;
 		};
+
 		vqps_ext_en: vqps_ext_en {
 			gpios = <MCHP_GPIO_DECODE_036 GPIO_ACTIVE_HIGH>;
 		};
+
 		ovrm_en: ovrm_en {
 			gpios = <MCHP_GPIO_DECODE_175 GPIO_ACTIVE_HIGH>;
+		};
+
+		vtr2_thermtrip: vtr2_thermtrip {
+			gpios = <MCHP_GPIO_DECODE_222 GPIO_ACTIVE_HIGH>;
 		};
 	};
 };
