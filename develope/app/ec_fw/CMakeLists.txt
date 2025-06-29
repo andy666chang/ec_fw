@@ -10,3 +10,4 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(ec_fw)
 
 target_sources(app PRIVATE src/main.c)
+target_sources(app PRIVATE src/power_n1x.c)
