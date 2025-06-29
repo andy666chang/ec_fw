@@ -2,7 +2,7 @@
  * @Author: andy.chang
  * @Date: 2025-06-29 17:06:01
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-06-29 19:32:50
+ * @Last Modified time: 2025-06-29 21:35:50
  */
 
 #include <errno.h>
@@ -214,3 +214,28 @@ static int _power_off(k_timeout_t delay) {
 
     return ret;
 }
+
+
+#ifdef CONFIG_SHELL
+#include <zephyr/shell/shell.h>
+
+static int cmd_pwr_on(const struct shell *sh, size_t argc, char **argv) {
+    power_on();
+    return 0;
+}
+
+static int cmd_pwr_off(const struct shell *sh, size_t argc, char **argv) {
+    power_off();
+    return 0;
+}
+
+SHELL_STATIC_SUBCMD_SET_CREATE(sub_power,
+	SHELL_CMD_ARG(on, NULL,
+		"Power on system", cmd_pwr_on, 0, 0),
+	SHELL_CMD_ARG(off, NULL,
+		"Power off system", cmd_pwr_off, 0, 0),
+	SHELL_SUBCMD_SET_END /* Array terminated. */
+);
+
+SHELL_CMD_REGISTER(power, &sub_power, "Power commands", NULL);
+#endif
