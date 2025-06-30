@@ -11,20 +11,18 @@
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/logging/log.h>
 
-LOG_MODULE_REGISTER(ther_n1x, LOG_LEVEL_INF);
-
-#define FAN_PERIOD PWM_USEC(40) // 25KHz period for fan PWM
+LOG_MODULE_REGISTER(fan_n1x, LOG_LEVEL_INF);
 
 static const struct fan_dev_t {
-    const struct device *fan_dev;
-    const struct device *tach_dev;
+    const struct pwm_dt_spec fan;
+    const struct device *tach;
 } fan_dev_list[] = {
     {
-        DEVICE_DT_GET(DT_NODELABEL(pwm0)),
+        PWM_DT_SPEC_GET(DT_NODELABEL(fan0)),
         DEVICE_DT_GET(DT_NODELABEL(tach0)),
     },
     {
-        DEVICE_DT_GET(DT_NODELABEL(pwm0)),
+        PWM_DT_SPEC_GET(DT_NODELABEL(fan1)),
         DEVICE_DT_GET(DT_NODELABEL(tach1)),
     },
 };
@@ -35,11 +33,14 @@ int app_fan_set_speed(int fan_id, uint8_t speed) {
         return -EINVAL;
     }
 
-    int ret = 0;
-    const struct device *fan_dev = fan_dev_list[fan_id].fan_dev;
+    if (speed > 100) {
+        speed = 100; // Cap speed at 100%
+    }
 
-    ret = pwm_set(fan_dev, 0, FAN_PERIOD, FAN_PERIOD * speed / 100,
-                  PWM_POLARITY_INVERTED);
+    int ret = 0;
+    uint32_t pulse = (uint64_t)fan_dev_list[fan_id].fan.period * speed / 100;
+
+    ret = pwm_set_pulse_dt(&fan_dev_list[fan_id].fan, pulse);
     if (ret < 0) {
         LOG_ERR("Failed to set speed for fan%d: %d", fan_id, ret);
     } else {
@@ -56,16 +57,16 @@ int app_fan_get_rpm(int fan_id, uint16_t *rpm) {
     }
 
     int ret = 0;
-    const struct device *tach_dev = fan_dev_list[fan_id].tach_dev;
+    const struct device *tach = fan_dev_list[fan_id].tach;
     struct sensor_value val = {0};
 
-    ret = sensor_sample_fetch_chan(tach_dev, SENSOR_CHAN_RPM);
+    ret = sensor_sample_fetch_chan(tach, SENSOR_CHAN_RPM);
     if (ret) {
         LOG_ERR("Failed to fetch RPM sample for fan%d: %d", fan_id, ret);
         return ret;
     }
 
-    ret = sensor_channel_get(tach_dev, SENSOR_CHAN_RPM, &val);
+    ret = sensor_channel_get(tach, SENSOR_CHAN_RPM, &val);
     if (ret) {
         LOG_ERR("Failed to get RPM for fan%d: %d", fan_id, ret);
         return ret;
@@ -85,20 +86,19 @@ static int init_config(void) {
     LOG_INF("Initializing thermal configuration...");
 
     for (size_t i = 0; i < ARRAY_SIZE(fan_dev_list); i++) {
-        if (!device_is_ready(fan_dev_list[i].fan_dev)) {
+
+        if (!pwm_is_ready_dt(&fan_dev_list[i].fan)) {
             LOG_ERR("fan%d not ready", i);
             return -ENODEV;
         }
 
-        // Set the PWM period for each fan device
-        ret = pwm_set(fan_dev_list[i].fan_dev, 0, FAN_PERIOD, FAN_PERIOD,
-                      PWM_POLARITY_INVERTED);
+        ret = pwm_set_pulse_dt(&fan_dev_list[i].fan, fan_dev_list[i].fan.period);
         if (ret < 0) {
-            LOG_ERR("Failed to set PWM cycles for fan%d: %d", i, ret);
+            LOG_ERR("Failed to set PWM for fan%d: %d", i, ret);
             return ret;
         }
 
-        if (!device_is_ready(fan_dev_list[i].tach_dev)) {
+        if (!device_is_ready(fan_dev_list[i].tach)) {
             LOG_ERR("tach%d not ready", i);
             return -ENODEV;
         }

@@ -1,4 +1,6 @@
 
+#include <dt-bindings/pwm/pwm.h>
+
 / {
 	pwr-rail {
 		compatible = "gpio-leds";
@@ -86,6 +88,17 @@
 		// EC_FLASH_MUX_PATH_CTL
 		flash_mux_path_ctl: flash_mux_path_ctl {
 			gpios = <MCHP_GPIO_DECODE_142 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
+	pwmfans {
+		compatible = "pwm-leds";
+		fan0: fan0 {
+			pwms = <&pwm0 0 PWM_USEC(40) PWM_POLARITY_INVERTED>;
+		};
+
+		fan1: fan1 {
+			pwms = <&pwm1 0 PWM_USEC(40) PWM_POLARITY_INVERTED>;
 		};
 	};
 };
