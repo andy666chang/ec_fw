@@ -11,7 +11,7 @@
 #include <zephyr/logging/log.h>
 
 
-LOG_MODULE_REGISTER(pwr_n1x, LOG_LEVEL_INFO);
+LOG_MODULE_REGISTER(pwr_n1x, LOG_LEVEL_INF);
 
 #define MCHP_GPIO_DECLARE(PIN_DT)                                              \
     static const struct gpio_dt_spec PIN_DT =                                  \
@@ -70,7 +70,7 @@ static int power_off(void);
 static int _power_off(k_timeout_t delay);
 
 static int power_on(void) {
-    int ret;
+    int ret = 0;
 
     LOG_WRN("Run power on sequence: %s", CONFIG_BOARD);
 
@@ -161,8 +161,8 @@ static int _power_off(k_timeout_t delay) {
     /* 4: drive VTR3_SYSRSTB low */
     MCHP_GPIO_SET(&pmic_rsmrst, 0);
 
+    k_sleep(delay);
 #ifndef CONFIG_MEC1723_N1X_D_P
-	k_sleep(delay);
     /* 5: write EC_DP12V_EN low */
     MCHP_GPIO_SET(&dp12v_en, 0);
 
@@ -214,6 +214,58 @@ static int _power_off(k_timeout_t delay) {
 
     return ret;
 }
+
+#include <zephyr/init.h>
+
+MCHP_GPIO_DECLARE(flash_mux_path_ctl);
+
+const struct pins_cfg_t {
+    const struct gpio_dt_spec *pin;
+    uint32_t flags;
+} pins_cfg[] = {
+    {&ao_3v3_1v8_1v2_en, GPIO_OUTPUT_LOW},
+    {&ao_1v8_1v2_pg, GPIO_INPUT},
+    {&ao_5v_en, GPIO_OUTPUT_LOW},
+    {&ao_pr3v3_en, GPIO_OUTPUT_LOW},
+    {&ao_5v_pg, GPIO_INPUT},
+    {&ao_pr3v3_pg, GPIO_INPUT},
+    {&pmic_en, GPIO_OUTPUT_HIGH | GPIO_OPEN_DRAIN},
+    {&vusb_5v_tpc_pg, GPIO_INPUT},
+    {&vio12_usb2_vdd1_en, GPIO_INPUT},
+    {&vio12_usb2_vdd1_pg, GPIO_INPUT},
+    {&gpu_vr_pg, GPIO_INPUT},
+    {&vio18_vdd2l_en, GPIO_INPUT},
+    {&vio18_vdd2l_pg, GPIO_INPUT},
+    {&pmic_pg, GPIO_INPUT},
+    {&pmic_rsmrst, GPIO_OUTPUT_LOW | GPIO_OPEN_DRAIN},
+#ifndef CONFIG_MEC1723_N1X_D_P
+    {&dp12v_en, GPIO_OUTPUT_LOW},
+    {&drvvbus_en, GPIO_OUTPUT_LOW},
+#endif
+    {&vqps_ext_en, GPIO_OUTPUT_LOW},
+    {&ovrm_en, GPIO_OUTPUT_HIGH},
+    {&vtr2_thermtrip, GPIO_INPUT},
+    {&flash_mux_path_ctl, GPIO_OUTPUT_LOW},
+};
+
+static int pwr_on_config(void) {
+    int ret = 0;
+
+    LOG_INF("Configuring power on pins...");
+
+    for (size_t i = 0; i < ARRAY_SIZE(pins_cfg); i++) {
+        ret = gpio_pin_configure_dt(pins_cfg[i].pin, pins_cfg[i].flags);
+        if (ret < 0) {
+            LOG_ERR("Failed to configure %s: %d", pins_cfg[i].pin->port->name,
+                    ret);
+            break;
+        }
+    }
+
+    return ret;
+}
+
+SYS_INIT(pwr_on_config, APPLICATION, 0);
 
 
 #ifdef CONFIG_SHELL

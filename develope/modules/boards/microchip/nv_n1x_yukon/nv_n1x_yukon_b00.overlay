@@ -82,6 +82,11 @@
 		vtr2_thermtrip: vtr2_thermtrip {
 			gpios = <MCHP_GPIO_DECODE_222 GPIO_ACTIVE_HIGH>;
 		};
+
+		// EC_FLASH_MUX_PATH_CTL
+		flash_mux_path_ctl: flash_mux_path_ctl {
+			gpios = <MCHP_GPIO_DECODE_142 GPIO_ACTIVE_HIGH>;
+		};
 	};
 };
 
