@@ -11,3 +11,4 @@ project(ec_fw)
 
 target_sources(app PRIVATE src/main.c)
 target_sources(app PRIVATE src/power_n1x.c)
+target_sources(app PRIVATE src/thermal_n1x.c)
