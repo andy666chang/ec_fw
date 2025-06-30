@@ -2,7 +2,7 @@
  * @Author: andy.chang
  * @Date: 2025-06-29 17:06:01
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-06-29 21:35:50
+ * @Last Modified time: 2025-07-01 02:51:01
  */
 
 #include <errno.h>
@@ -65,11 +65,9 @@ MCHP_GPIO_DECLARE(vqps_ext_en);
 MCHP_GPIO_DECLARE(ovrm_en);
 MCHP_GPIO_DECLARE(vtr2_thermtrip);
 
-static int power_on(void);
-static int power_off(void);
 static int _power_off(k_timeout_t delay);
 
-static int power_on(void) {
+int power_on(void) {
     int ret = 0;
 
     LOG_WRN("Run power on sequence: %s", CONFIG_BOARD);
@@ -132,7 +130,7 @@ static int power_on(void) {
     return ret;
 }
 
-static int power_off(void) {
+int power_off(void) {
     int ret = 0;
 
     LOG_WRN("%s start", __func__);
@@ -266,28 +264,3 @@ static int pwr_on_config(void) {
 }
 
 SYS_INIT(pwr_on_config, APPLICATION, 0);
-
-
-#ifdef CONFIG_SHELL
-#include <zephyr/shell/shell.h>
-
-static int cmd_pwr_on(const struct shell *sh, size_t argc, char **argv) {
-    power_on();
-    return 0;
-}
-
-static int cmd_pwr_off(const struct shell *sh, size_t argc, char **argv) {
-    power_off();
-    return 0;
-}
-
-SHELL_STATIC_SUBCMD_SET_CREATE(sub_power,
-	SHELL_CMD_ARG(on, NULL,
-		"Power on system", cmd_pwr_on, 0, 0),
-	SHELL_CMD_ARG(off, NULL,
-		"Power off system", cmd_pwr_off, 0, 0),
-	SHELL_SUBCMD_SET_END /* Array terminated. */
-);
-
-SHELL_CMD_REGISTER(power, &sub_power, "Power commands", NULL);
-#endif

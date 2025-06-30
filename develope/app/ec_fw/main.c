@@ -6,8 +6,7 @@
 
 #include <zephyr/kernel.h>
 
-int main(void)
-{
-	printk("Hello World! %s, Rev: %s\n", CONFIG_BOARD, CONFIG_BOARD_REVISION);
-	return 0;
+int main(void) {
+    printk("Hello World! %s, Rev: %s\n", CONFIG_BOARD, CONFIG_BOARD_REVISION);
+    return 0;
 }

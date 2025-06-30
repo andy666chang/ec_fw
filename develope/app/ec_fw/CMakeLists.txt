@@ -9,6 +9,12 @@ list(APPEND EXTRA_ZEPHYR_MODULES
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(ec_fw)
 
-target_sources(app PRIVATE src/main.c)
-target_sources(app PRIVATE src/power_n1x.c)
-target_sources(app PRIVATE src/thermal_n1x.c)
+
+include_directories(app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_subdirectory(drivers)
+add_subdirectory(services)
+
+target_sources(app PRIVATE main.c)
+# target_sources(app PRIVATE src/power_n1x.c)
+# target_sources(app PRIVATE src/thermal_n1x.c)
