@@ -2,7 +2,7 @@
  * @Author: andy.chang 
  * @Date: 2025-07-01 02:46:45 
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-07-01 02:47:47
+ * @Last Modified time: 2025-07-01 11:02:40
  */
 
 #include <zephyr/kernel.h>
@@ -12,7 +12,32 @@
 
 LOG_MODULE_REGISTER(thermal, LOG_LEVEL_INF);
 
+#define STACKSIZE 1024
+#define PRIORITY 7
 
+static void service(void) {
+    LOG_INF("Thermal service started");
+
+    // Initialize thermal sensors, fans, etc.
+    // int ret = thermal_init();
+    // if (ret < 0) {
+    //     LOG_ERR("Failed to initialize thermal service: %d", ret);
+    //     return;
+    // }
+
+    while (1) {
+        // Monitor temperature and control fans
+        // ret = thermal_monitor();
+        // if (ret < 0) {
+        //     LOG_ERR("Thermal monitoring failed: %d", ret);
+        // }
+
+        k_sleep(K_MSEC(1000)); // Sleep for 1 second before next iteration
+    }
+	
+}
+
+K_THREAD_DEFINE(thermal_id, STACKSIZE, service, NULL, NULL, NULL, PRIORITY, 0, 0);
 
 #ifdef CONFIG_SHELL
 #include <zephyr/shell/shell.h>
