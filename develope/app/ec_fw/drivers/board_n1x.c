@@ -1,0 +1,96 @@
+/*
+ * @Author: andy.chang 
+ * @Date: 2025-07-01 10:44:47 
+ * @Last Modified by: andy.chang
+ * @Last Modified time: 2025-07-01 10:54:14
+ */
+
+#include <errno.h>
+#include <zephyr/kernel.h>
+#include <zephyr/init.h>
+#include <zephyr/logging/log.h>
+
+#include "gpio_mchp.h"
+
+LOG_MODULE_REGISTER(board_n1x, LOG_LEVEL_INF);
+
+MCHP_GPIO_DECLARE(ao_3v3_1v8_1v2_en);
+MCHP_GPIO_DECLARE(ao_1v8_1v2_pg);
+MCHP_GPIO_DECLARE(ao_5v_en);
+MCHP_GPIO_DECLARE(ao_pr3v3_en);
+MCHP_GPIO_DECLARE(ao_5v_pg);
+MCHP_GPIO_DECLARE(ao_pr3v3_pg);
+MCHP_GPIO_DECLARE(pmic_en);
+MCHP_GPIO_DECLARE(vusb_5v_tpc_pg);
+MCHP_GPIO_DECLARE(vio12_usb2_vdd1_en);
+MCHP_GPIO_DECLARE(vio12_usb2_vdd1_pg);
+MCHP_GPIO_DECLARE(gpu_vr_pg);
+MCHP_GPIO_DECLARE(vio18_vdd2l_en);
+MCHP_GPIO_DECLARE(vio18_vdd2l_pg);
+MCHP_GPIO_DECLARE(pmic_pg);
+MCHP_GPIO_DECLARE(pmic_rsmrst);
+#ifndef CONFIG_MEC1723_N1X_D_P
+MCHP_GPIO_DECLARE(dp12v_en);
+MCHP_GPIO_DECLARE(drvvbus_en);
+#endif
+MCHP_GPIO_DECLARE(vqps_ext_en);
+MCHP_GPIO_DECLARE(ovrm_en);
+MCHP_GPIO_DECLARE(vtr2_thermtrip);
+MCHP_GPIO_DECLARE(flash_mux_path_ctl);
+
+typedef struct gpio_cfg_t {
+    const struct gpio_dt_spec *pin;
+    uint32_t flags;
+} gpio_cfg_t;
+
+static const gpio_cfg_t gpio_init_cfg_tbl[] = {
+    {&ao_3v3_1v8_1v2_en, GPIO_OUTPUT_LOW},
+    {&ao_1v8_1v2_pg, GPIO_INPUT},
+    {&ao_5v_en, GPIO_OUTPUT_LOW},
+    {&ao_pr3v3_en, GPIO_OUTPUT_LOW},
+    {&ao_5v_pg, GPIO_INPUT},
+    {&ao_pr3v3_pg, GPIO_INPUT},
+    {&pmic_en, GPIO_OUTPUT_HIGH | GPIO_OPEN_DRAIN},
+    {&vusb_5v_tpc_pg, GPIO_INPUT},
+    {&vio12_usb2_vdd1_en, GPIO_INPUT},
+    {&vio12_usb2_vdd1_pg, GPIO_INPUT},
+    {&gpu_vr_pg, GPIO_INPUT},
+    {&vio18_vdd2l_en, GPIO_INPUT},
+    {&vio18_vdd2l_pg, GPIO_INPUT},
+    {&pmic_pg, GPIO_INPUT},
+    {&pmic_rsmrst, GPIO_OUTPUT_LOW | GPIO_OPEN_DRAIN},
+#ifndef CONFIG_MEC1723_N1X_D_P
+    {&dp12v_en, GPIO_OUTPUT_LOW},
+    {&drvvbus_en, GPIO_OUTPUT_LOW},
+#endif
+    {&vqps_ext_en, GPIO_OUTPUT_LOW},
+    {&ovrm_en, GPIO_OUTPUT_HIGH},
+    {&vtr2_thermtrip, GPIO_INPUT},
+    {&flash_mux_path_ctl, GPIO_OUTPUT_LOW},
+};
+
+static int init(void) {
+    int ret = 0;
+
+    LOG_INF("Configuring power on pins...");
+
+    for (size_t i = 0; i < ARRAY_SIZE(gpio_init_cfg_tbl); i++) {
+        const gpio_cfg_t *cfg = &gpio_init_cfg_tbl[i];
+
+        if (!device_is_ready(cfg->pin->port)) {
+            LOG_ERR("GPIO port %s is not ready", cfg->pin->port->name);
+            ret = -ENODEV;
+            break;
+        }
+
+        ret = gpio_pin_configure_dt(cfg->pin, cfg->flags);
+        if (ret < 0) {
+            LOG_ERR("Failed to configure %s: %d", cfg->pin->port->name, ret);
+            break;
+        }
+    }
+
+    return ret;
+}
+
+SYS_INIT(init, APPLICATION, 0);

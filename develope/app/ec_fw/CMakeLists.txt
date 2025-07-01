@@ -16,5 +16,3 @@ add_subdirectory(drivers)
 add_subdirectory(services)
 
 target_sources(app PRIVATE main.c)
-# target_sources(app PRIVATE src/power_n1x.c)
-# target_sources(app PRIVATE src/thermal_n1x.c)

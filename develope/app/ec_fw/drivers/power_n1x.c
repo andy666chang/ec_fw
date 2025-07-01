@@ -2,7 +2,7 @@
  * @Author: andy.chang
  * @Date: 2025-06-29 17:06:01
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-07-01 02:51:01
+ * @Last Modified time: 2025-07-01 10:46:56
  */
 
 #include <errno.h>
@@ -10,37 +10,9 @@
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
+#include "gpio_mchp.h"
 
 LOG_MODULE_REGISTER(pwr_n1x, LOG_LEVEL_INF);
-
-#define MCHP_GPIO_DECLARE(PIN_DT)                                              \
-    static const struct gpio_dt_spec PIN_DT =                                  \
-        GPIO_DT_SPEC_GET(DT_NODELABEL(PIN_DT), gpios)
-
-#define MCHP_GPIO_SET(PIN, LEVEL)                                              \
-    do {                                                                       \
-        LOG_INF("Drive %s %s", #PIN, (LEVEL) ? "high" : "low");                \
-        int ret = gpio_pin_set_dt(PIN, LEVEL);                                 \
-        if (ret) {                                                             \
-            LOG_ERR("Failed to write %s", #PIN);                               \
-            return ret;                                                        \
-        }                                                                      \
-    } while (0)
-
-#define MCHP_GPIO_WAIT(PIN, LEVEL)                                             \
-    do {                                                                       \
-        LOG_INF("Wait %s %s", #PIN, (LEVEL) ? "high" : "low");                 \
-        do {                                                                   \
-            int ret = gpio_pin_get_dt(PIN);                                    \
-            if (ret < 0) {                                                     \
-                LOG_ERR("Failed to wait %s", #PIN);                            \
-                return ret;                                                    \
-            } else if (ret == LEVEL) {                                         \
-                break;                                                         \
-            }                                                                  \
-            k_sleep(K_USEC(100));                                              \
-        } while (1);                                                           \
-    } while (0)
 
 MCHP_GPIO_DECLARE(ao_3v3_1v8_1v2_en);
 MCHP_GPIO_DECLARE(ao_1v8_1v2_pg);
@@ -212,55 +184,3 @@ static int _power_off(k_timeout_t delay) {
 
     return ret;
 }
-
-#include <zephyr/init.h>
-
-MCHP_GPIO_DECLARE(flash_mux_path_ctl);
-
-const struct pins_cfg_t {
-    const struct gpio_dt_spec *pin;
-    uint32_t flags;
-} pins_cfg[] = {
-    {&ao_3v3_1v8_1v2_en, GPIO_OUTPUT_LOW},
-    {&ao_1v8_1v2_pg, GPIO_INPUT},
-    {&ao_5v_en, GPIO_OUTPUT_LOW},
-    {&ao_pr3v3_en, GPIO_OUTPUT_LOW},
-    {&ao_5v_pg, GPIO_INPUT},
-    {&ao_pr3v3_pg, GPIO_INPUT},
-    {&pmic_en, GPIO_OUTPUT_HIGH | GPIO_OPEN_DRAIN},
-    {&vusb_5v_tpc_pg, GPIO_INPUT},
-    {&vio12_usb2_vdd1_en, GPIO_INPUT},
-    {&vio12_usb2_vdd1_pg, GPIO_INPUT},
-    {&gpu_vr_pg, GPIO_INPUT},
-    {&vio18_vdd2l_en, GPIO_INPUT},
-    {&vio18_vdd2l_pg, GPIO_INPUT},
-    {&pmic_pg, GPIO_INPUT},
-    {&pmic_rsmrst, GPIO_OUTPUT_LOW | GPIO_OPEN_DRAIN},
-#ifndef CONFIG_MEC1723_N1X_D_P
-    {&dp12v_en, GPIO_OUTPUT_LOW},
-    {&drvvbus_en, GPIO_OUTPUT_LOW},
-#endif
-    {&vqps_ext_en, GPIO_OUTPUT_LOW},
-    {&ovrm_en, GPIO_OUTPUT_HIGH},
-    {&vtr2_thermtrip, GPIO_INPUT},
-    {&flash_mux_path_ctl, GPIO_OUTPUT_LOW},
-};
-
-static int pwr_on_config(void) {
-    int ret = 0;
-
-    LOG_INF("Configuring power on pins...");
-
-    for (size_t i = 0; i < ARRAY_SIZE(pins_cfg); i++) {
-        ret = gpio_pin_configure_dt(pins_cfg[i].pin, pins_cfg[i].flags);
-        if (ret < 0) {
-            LOG_ERR("Failed to configure %s: %d", pins_cfg[i].pin->port->name,
-                    ret);
-            break;
-        }
-    }
-
-    return ret;
-}
-
-SYS_INIT(pwr_on_config, APPLICATION, 0);
