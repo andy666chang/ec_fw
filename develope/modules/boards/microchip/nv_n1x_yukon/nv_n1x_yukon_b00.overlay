@@ -127,6 +127,25 @@
 	pinctrl-names = "default";
 };
 
+&i2c_smb_2 {
+	status = "okay";
+	port_sel = <2>;
+	pinctrl-0 = <&i2c02_sda_gpio154 &i2c02_scl_gpio155>;
+	pinctrl-names = "default";
+
+	tmp451_0: tmp451_0@4c {
+		// compatible = "ti,tmp451";
+		compatible = "i2c-device";
+		reg = <0x4c>;
+	};
+
+	tmp451_1: tmp451_1@49 {
+		// compatible = "ti,tmp451";
+		compatible = "i2c-device";
+		reg = <0x49>;
+	};
+};
+
 &pcr {
 	// xtal-single-ended;
 	// internal-osc-disable;
