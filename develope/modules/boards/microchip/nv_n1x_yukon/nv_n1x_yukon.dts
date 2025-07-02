@@ -9,6 +9,9 @@
 #include <microchip/mec172xnsz.dtsi>
 #include <microchip/mec172x/mec172xnsz-pinctrl.dtsi>
 
+#include "nv_n1x_yukon_pwr.dtsi"
+#include "nv_n1x_yukon_thermal.dtsi"
+
 / {
 	model = "NV_N1X_YUKON";
 	compatible = "microchip,nv_n1x_yukon","microchip,mec172xnsz";
@@ -55,6 +58,15 @@
 		ec_pdc1_i2c_int: ec_pdc1_i2c_int {
 			gpios = <&gpio_000_036 35 GPIO_ACTIVE_HIGH>;
 			label = "PDC-1 ALERT INT";
+		};
+	};
+
+	flash_ctrl {
+		compatible = "gpio-leds";
+
+		// EC_FLASH_MUX_PATH_CTL
+		flash_mux_path_ctl: flash_mux_path_ctl {
+			gpios = <MCHP_GPIO_DECODE_142 GPIO_ACTIVE_HIGH>;
 		};
 	};
 };

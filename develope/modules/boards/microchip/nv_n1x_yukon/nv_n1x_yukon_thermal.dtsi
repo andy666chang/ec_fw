@@ -1,0 +1,58 @@
+
+#include <dt-bindings/pwm/pwm.h>
+
+/ {
+	pwmfans {
+		compatible = "pwm-leds";
+		fan0: fan0 {
+			pwms = <&pwm0 0 PWM_USEC(40) PWM_POLARITY_INVERTED>;
+		};
+
+		fan1: fan1 {
+			pwms = <&pwm1 0 PWM_USEC(40) PWM_POLARITY_INVERTED>;
+		};
+	};
+};
+
+&pwm0 {
+	status = "okay";
+	pinctrl-0 = <&pwm0_gpio053>;
+	pinctrl-names = "default";
+};
+
+&pwm1 {
+	status = "okay";
+	pinctrl-0 = <&pwm1_gpio054>;
+	pinctrl-names = "default";
+};
+
+&tach0 {
+	status = "okay";
+	pinctrl-0 = <&tach0_gpio050>;
+	pinctrl-names = "default";
+};
+
+&tach1 {
+	status = "okay";
+	pinctrl-0 = <&tach1_gpio051>;
+	pinctrl-names = "default";
+};
+
+&i2c_smb_2 {
+	status = "okay";
+	port_sel = <2>;
+	pinctrl-0 = <&i2c02_sda_gpio154 &i2c02_scl_gpio155>;
+	pinctrl-names = "default";
+
+	tmp451_0: tmp451_0@4c {
+		// compatible = "ti,tmp451";
+		compatible = "i2c-device";
+		reg = <0x4c>;
+	};
+
+	tmp451_1: tmp451_1@49 {
+		// compatible = "ti,tmp451";
+		compatible = "i2c-device";
+		reg = <0x49>;
+	};
+};

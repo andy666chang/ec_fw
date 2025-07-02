@@ -1,0 +1,86 @@
+
+/ {
+	pwr-rail {
+		compatible = "gpio-leds";
+
+		ao_3v3_1v8_1v2_en: ao_3v3_1v8_1v2_en {
+			gpios = <MCHP_GPIO_DECODE_106 GPIO_ACTIVE_HIGH>;
+		};
+
+		ao_1v8_1v2_pg: ao_1v8_1v2_pg {
+			gpios = <MCHP_GPIO_DECODE_022 GPIO_ACTIVE_HIGH>;
+		};
+
+		ao_5v_en: ao_5v_en {
+			gpios = <MCHP_GPIO_DECODE_114 GPIO_ACTIVE_HIGH>;
+		};
+
+		ao_pr3v3_en: ao_pr3v3_en {
+			gpios = <MCHP_GPIO_DECODE_202 GPIO_ACTIVE_HIGH>;
+		};
+
+		ao_5v_pg: ao_5v_pg {
+			gpios = <MCHP_GPIO_DECODE_115 GPIO_ACTIVE_HIGH>;
+		};
+
+		ao_pr3v3_pg: ao_pr3v3_pg {
+			gpios = <MCHP_GPIO_DECODE_156 GPIO_ACTIVE_HIGH>;
+		};
+
+		pmic_en: pmic_en {
+			gpios = <MCHP_GPIO_DECODE_042 GPIO_ACTIVE_HIGH>;
+		};
+
+		vusb_5v_tpc_pg: vusb_5v_tpc_pg {
+			gpios = <MCHP_GPIO_DECODE_043 GPIO_ACTIVE_HIGH>;
+		};
+
+		vio12_usb2_vdd1_en: vio12_usb2_vdd1_en {
+			gpios = <MCHP_GPIO_DECODE_226 GPIO_ACTIVE_HIGH>;
+		};
+
+		vio12_usb2_vdd1_pg: vio12_usb2_vdd1_pg {
+			gpios = <MCHP_GPIO_DECODE_241 GPIO_ACTIVE_HIGH>;
+		};
+
+		gpu_vr_pg: gpu_vr_pg {
+			gpios = <MCHP_GPIO_DECODE_245 GPIO_ACTIVE_HIGH>;
+		};
+
+		vio18_vdd2l_en: vio18_vdd2l_en {
+			gpios = <MCHP_GPIO_DECODE_240 GPIO_ACTIVE_HIGH>;
+		};
+
+		vio18_vdd2l_pg: vio18_vdd2l_pg {
+			gpios = <MCHP_GPIO_DECODE_244 GPIO_ACTIVE_HIGH>;
+		};
+
+		pmic_pg: pmic_pg {
+			gpios = <MCHP_GPIO_DECODE_024 GPIO_ACTIVE_HIGH>;
+		};
+
+		pmic_rsmrst: pmic_rsmrst {
+			gpios = <MCHP_GPIO_DECODE_011 GPIO_ACTIVE_HIGH>;
+		};
+
+		dp12v_en: dp12v_en {
+			gpios = <MCHP_GPIO_DECODE_033 GPIO_ACTIVE_HIGH>;
+		};
+
+		drvvbus_en: drvvbus_en {
+			gpios = <MCHP_GPIO_DECODE_205 GPIO_ACTIVE_HIGH>;
+		};
+
+		vqps_ext_en: vqps_ext_en {
+			gpios = <MCHP_GPIO_DECODE_036 GPIO_ACTIVE_HIGH>;
+		};
+
+		ovrm_en: ovrm_en {
+			gpios = <MCHP_GPIO_DECODE_175 GPIO_ACTIVE_HIGH>;
+		};
+
+		vtr2_thermtrip: vtr2_thermtrip {
+			gpios = <MCHP_GPIO_DECODE_222 GPIO_ACTIVE_HIGH>;
+		};
+	};
+};
