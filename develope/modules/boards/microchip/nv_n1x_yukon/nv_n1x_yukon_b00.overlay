@@ -1,5 +1,44 @@
 
 / {
+	pins {
+		compatible = "gpio-leds";
+
+		wake_sci: wake_sci {
+			gpios = <MCHP_GPIO_DECODE_052 GPIO_ACTIVE_HIGH>;
+		};
+
+		kbc_caps_lock: kbc_caps_lock {
+			gpios = <MCHP_GPIO_DECODE_062 GPIO_ACTIVE_HIGH>;
+		};
+
+		cam_lid_close: cam_lid_close {
+			gpios = <MCHP_GPIO_DECODE_067 GPIO_ACTIVE_HIGH>;
+		};
+
+		cam_plt_rst: cam_plt_rst {
+			gpios = <MCHP_GPIO_DECODE_064 GPIO_ACTIVE_HIGH>;
+		};
+
+		s4_led: s4_led {
+			gpios = <MCHP_GPIO_DECODE_141 GPIO_ACTIVE_HIGH>;
+		};
+
+		ms_led: ms_led {
+			gpios = <MCHP_GPIO_DECODE_145 GPIO_ACTIVE_HIGH>;
+		};
+
+		cam0_active: cam0_active {
+			gpios = <MCHP_GPIO_DECODE_153 GPIO_ACTIVE_HIGH>;
+		};
+
+		s0_led: s0_led {
+			gpios = <MCHP_GPIO_DECODE_165 GPIO_ACTIVE_HIGH>;
+		};
+
+		rtc_en: rtc_en {
+			gpios = <MCHP_GPIO_DECODE_101 GPIO_ACTIVE_HIGH>;
+		};
+	};
 
 };
 

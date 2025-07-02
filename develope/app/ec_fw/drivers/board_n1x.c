@@ -37,6 +37,15 @@ MCHP_GPIO_DECLARE(vqps_ext_en);
 MCHP_GPIO_DECLARE(ovrm_en);
 MCHP_GPIO_DECLARE(vtr2_thermtrip);
 MCHP_GPIO_DECLARE(flash_mux_path_ctl);
+MCHP_GPIO_DECLARE(wake_sci);
+MCHP_GPIO_DECLARE(kbc_caps_lock);
+MCHP_GPIO_DECLARE(cam_lid_close);
+MCHP_GPIO_DECLARE(cam_plt_rst);
+MCHP_GPIO_DECLARE(s4_led);
+MCHP_GPIO_DECLARE(ms_led);
+MCHP_GPIO_DECLARE(cam0_active);
+MCHP_GPIO_DECLARE(s0_led);
+MCHP_GPIO_DECLARE(rtc_en);
 
 typedef struct gpio_cfg_t {
     const struct gpio_dt_spec *pin;
@@ -67,6 +76,15 @@ static const gpio_cfg_t gpio_init_cfg_tbl[] = {
     {&ovrm_en, GPIO_OUTPUT_HIGH},
     {&vtr2_thermtrip, GPIO_INPUT},
     {&flash_mux_path_ctl, GPIO_OUTPUT_LOW},
+    {&wake_sci, GPIO_OUTPUT_HIGH | GPIO_OPEN_DRAIN},     // EC_GPIO_052
+    {&kbc_caps_lock, GPIO_OUTPUT_LOW},                   // EC_GPIO_062
+    {&cam_lid_close, GPIO_OUTPUT_LOW | GPIO_OPEN_DRAIN}, // EC_GPIO_067
+    {&cam_plt_rst, GPIO_OUTPUT_LOW | GPIO_OPEN_DRAIN},   // EC_GPIO_064
+    {&s4_led, GPIO_OUTPUT_LOW},                          // EC_GPIO_141
+    {&ms_led, GPIO_OUTPUT_LOW},                          // EC_GPIO_145
+    {&cam0_active, GPIO_OUTPUT_LOW},                     // EC_GPIO_153
+    {&s0_led, GPIO_OUTPUT_LOW},                          // EC_GPIO_165
+    {&rtc_en, GPIO_OUTPUT_HIGH},                         // EC_GPIO_101
 };
 
 static int init(void) {
