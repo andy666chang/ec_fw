@@ -11,7 +11,7 @@
 #include <zephyr/drivers/sensor.h>
 #include <zephyr/logging/log.h>
 
-LOG_MODULE_REGISTER(fan_n1x, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(fan_n1x, LOG_LEVEL_WRN);
 
 static const struct fan_dev_t {
     const struct pwm_dt_spec fan;
@@ -92,7 +92,7 @@ static int init_config(void) {
             return -ENODEV;
         }
 
-        ret = pwm_set_pulse_dt(&fan_dev_list[i].fan, fan_dev_list[i].fan.period);
+        ret = pwm_set_pulse_dt(&fan_dev_list[i].fan, 0);
         if (ret < 0) {
             LOG_ERR("Failed to set PWM for fan%d: %d", i, ret);
             return ret;
