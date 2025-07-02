@@ -1,0 +1,6 @@
+
+menu "Subsystems"
+
+rsource "app_event_manager/Kconfig"
+
+endmenu

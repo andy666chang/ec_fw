@@ -1,0 +1,19 @@
+
+menuconfig APP_EVENT_MANAGER
+	bool
+	prompt "Application Event Manager"
+	help
+	  Enable Application Event Manager.
+
+if APP_EVENT_MANAGER
+
+config APP_EVENT_MANAGER_SHELL
+	bool "Enable shell integration"
+	depends on SHELL
+	default n
+	help
+	  Enable Event Manager shell commands to display information about
+	  listeners, subscribers and events. The commands also allow to
+	  dynamically enable or disable logging for given event types.
+
+endif # APP_EVENT_MANAGER

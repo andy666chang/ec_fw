@@ -1,0 +1,2 @@
+
+add_subdirectory_ifdef(CONFIG_APP_EVENT_MANAGER	app_event_manager)
