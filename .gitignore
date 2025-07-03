@@ -8,6 +8,7 @@
 
 # User-specific files
 .venv
+.west
 
 # Build results
 build

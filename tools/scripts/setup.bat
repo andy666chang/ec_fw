@@ -11,7 +11,7 @@ set EC_IMG_GEN=%WORKSPACE%\tools\spi_image_trim_out\generating_binaries.py
 @REM set PATH=%PATH%;C:\Program Files (x86)\DediProg\SF Programmer
 @REM set PATH=%PATH%;C:\msys64\ucrt64\bin
 
-zephyr_3.7.0\zephyr\zephyr-env.cmd
+zephyr_3.7.0\zephyr_kernel\zephyr-env.cmd
 @REM zephyr_3.2.0\zephyr\zephyr-env.cmd
 
 

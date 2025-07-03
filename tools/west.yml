@@ -1,0 +1,31 @@
+manifest:
+  version: "0.12"
+
+  defaults:
+    remote: upstream
+
+  remotes:
+    - name: upstream
+      url-base: https://github.com/zephyrproject-rtos
+
+  projects:
+    - name: zephyr_kernel
+      repo-path: zephyr.git
+      path: zephyr_3.7.0/zephyr_kernel
+      remote: upstream
+      revision: v3.7.0
+      clone-depth: 1
+      west-commands: scripts/west-commands.yml
+
+    - name: cmsis
+      path: zephyr_3.7.0/modules/hal/cmsis
+      remote: upstream
+      revision: 4b96cbb174678dcd3ca86e11e1f24bc5f8726da0
+
+    - name: hal_microchip
+      path: zephyr_3.7.0/modules/hal/microchip
+      remote: upstream
+      revision: 71eba057c0cb7fc11b6f33eb40a82f1ebe2c571c
+
+  self:
+    path: zephyr_3.7.0
