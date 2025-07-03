@@ -1,0 +1,3 @@
+[submodule "CPGZephyrDocs.git"]
+	path = tools/CPGZephyrDocs
+	url = https://github.com/MicrochipTech/CPGZephyrDocs.git
