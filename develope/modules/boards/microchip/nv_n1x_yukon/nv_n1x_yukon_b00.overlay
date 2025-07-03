@@ -3,6 +3,11 @@
 	pins {
 		compatible = "gpio-leds";
 
+		pwr_btn_0: pwr_btn_0 {
+            gpios = <&gpio_140_176 18 GPIO_ACTIVE_HIGH>;
+			label = "Power button 0";
+        };
+
 		wake_sci: wake_sci {
 			gpios = <MCHP_GPIO_DECODE_052 GPIO_ACTIVE_HIGH>;
 		};
