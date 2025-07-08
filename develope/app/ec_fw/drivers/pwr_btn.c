@@ -67,21 +67,21 @@ static int init_config(void) {
     if (!device_is_ready(pwr_btn0.port)) {
         LOG_ERR("Error: power button  device %s is not ready\n",
                 pwr_btn0.port->name);
-        return;
+        return ret;
     }
 
     ret = gpio_pin_configure_dt(&pwr_btn0, GPIO_INPUT);
     if (ret != 0) {
         LOG_ERR("Error %d: failed to configure %s pin %d\n", ret,
                 pwr_btn0.port->name, pwr_btn0.pin);
-        return;
+        return ret;
     }
 
     ret = gpio_pin_interrupt_configure_dt(&pwr_btn0, GPIO_INT_EDGE_BOTH);
     if (ret != 0) {
         LOG_ERR("Error %d: failed to configure interrupt on %s pin %d\n", ret,
                 pwr_btn0.port->name, pwr_btn0.pin);
-        return;
+        return ret;
     }
 
     gpio_init_callback(&pwr_btn_cb_data, pwr_btn_callback, BIT(pwr_btn0.pin));
