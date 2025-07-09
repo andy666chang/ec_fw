@@ -31,11 +31,11 @@ static void service(void) {
 
         if (power_off_pending) {
             LOG_INF(">> Executing POWER OFF!");
-            power_off();
+            power_off(NULL);
             state = false;
         } else {
             LOG_INF(">> Executing POWER ON!");
-            power_on();
+            power_on(NULL);
             state = true;
         }
     }
@@ -90,12 +90,12 @@ APP_EVENT_SUBSCRIBE(power, pwr_btn_event);
 #include <zephyr/shell/shell.h>
 
 static int cmd_pwr_on(const struct shell *sh, size_t argc, char **argv) {
-    int ret = power_on();
+    int ret = power_on(NULL);
     return ret;
 }
 
 static int cmd_pwr_off(const struct shell *sh, size_t argc, char **argv) {
-    int ret = power_off();
+    int ret = power_off(NULL);
     return ret;
 }
 

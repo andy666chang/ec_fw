@@ -9,16 +9,31 @@
 
 #include <zephyr/kernel.h>
 
-/**
- * @brief 
+/** @brief Power on handler
  * 
- * @return int 
+ * This function is called to handle power on events.
+ * It will initiate the power on sequence.
+ * 
+ * @param obj Pointer to the object that triggered the event.
+ * @return int Returns 0 on success, negative error code on failure.
  */
-int power_on(void);
+int power_on(void *obj);
 
-/**
- * @brief 
+/** @brief Power off handler
  * 
- * @return int 
+ * This function is called to handle power off events.
+ * It will initiate the power off sequence.
+ * 
+ * @return int Returns 0 on success, negative error code on failure.
  */
-int power_off(void);
+int power_off(void *obj);
+
+/** @brief Power handler
+ * 
+ * This function is called to handle power events.
+ * It will manage the power state based on the event.
+ * 
+ * @param obj Pointer to the object that triggered the event.
+ * @return int Returns 0 on success, negative error code on failure.
+ */
+int power_handler(void *obj);
