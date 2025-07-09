@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: Apache-2.0
+
+description: TI TMP451 temperature sensor
+
+compatible: "ti,tmp451"
+
+include: i2c-device.yaml
+
+properties:
+    reg:
+        required: true
+        description: I2C bus address. Must be 0x4C.
+
+    alert-therm2-mode:
+        type: boolean
+        required: false
+        # default: false
+        description: >
+            Configure pin 6 as THERM2 output (true) or ALERT output (false, default).
+
+    conversion-rate:
+        type: int
+        required: false
+        default: 8
+        description: >
+            Conversion rate selection. Refer to Table 9 in TMP451 datasheet.
+            0: 0.0625 conv/s, 1: 0.125 conv/s, ..., 8: 16 conv/s (default), 9: 32 conv/s.
+
+    digital-filter-level:
+        type: int
+        required: false
+        default: 0
+        description: >
+            Configures the digital filter for remote temperature results.
+            0: Averaging off (default)
+            1: Moving average of 4 consecutive samples
+            2: Moving average of 8 consecutive samples
+
+    # Add properties for η-factor and remote offset if you plan to configure them via DTS
+    # eta-factor-correction-val:
+    #     type: int
+    #     required: false
+    #     default: 0 # Corresponds to η=1.008
+    #     description: >
+    #         η-factor correction value. Signed 8-bit integer. Refer to Table 27.
+
+    # remote-offset-celsius:
+    #     type: int
+    #     required: false
+    #     default: 0
+    #     description: >
+    #         Remote temperature offset in Celsius. 12-bit value.

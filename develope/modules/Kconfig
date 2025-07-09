@@ -1,6 +1,7 @@
 
 menu "MCHP EC"
 
+rsource "drivers/Kconfig"
 rsource "subsys/Kconfig"
 
 endmenu

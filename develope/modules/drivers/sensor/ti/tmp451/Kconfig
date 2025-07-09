@@ -1,0 +1,33 @@
+config SENSOR_TMP451
+    bool "TMP451 temperature sensor"
+    depends on I2C
+    help
+      Enable support for the TI TMP451 temperature sensor.
+
+config TMP451_ALERT_THERM2_MODE
+    bool "TMP451 ALERT/THERM2 Pin Configuration"
+    default y
+    help
+      Choose pin 6 output mode:
+      If y, Pin 6 is configured as THERM2 output.
+      If n, Pin 6 is configured as ALERT output (default in datasheet).
+
+config TMP451_CONVERSION_RATE
+    int "TMP451 Conversion Rate"
+    default 8
+    range 0 9
+    help
+      Sets the conversion rate for the TMP451.
+      0: 0.0625 conv/s, 1: 0.125 conv/s, ..., 8: 16 conv/s (default), 9: 32 conv/s.
+      Default to 16 conversions/sec
+      Refer to Table 9 in datasheet for valid values
+
+config TMP451_DIGITAL_FILTER_LEVEL
+    int "TMP451 Digital Filter Level"
+    default 0
+    range 0 2
+    help
+      Configures the digital filter for remote temperature measurements.
+      0: Averaging off (default)
+      1: Moving average of 4 consecutive samples
+      2: Moving average of 8 consecutive samples

@@ -1,0 +1,6 @@
+
+menu "MCHP EC"
+
+rsource "tmp451/Kconfig"
+
+endmenu

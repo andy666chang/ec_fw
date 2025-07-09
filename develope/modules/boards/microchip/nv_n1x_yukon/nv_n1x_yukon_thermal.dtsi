@@ -45,14 +45,18 @@
 	pinctrl-names = "default";
 
 	tmp451_0: tmp451_0@4c {
-		// compatible = "ti,tmp451";
-		compatible = "i2c-device";
+		compatible = "ti,tmp451";
 		reg = <0x4c>;
+		alert-therm2-mode; 			 // 配置為 ALERT 輸出
+        conversion-rate = <8>;       // 16 conversions/sec
+        digital-filter-level = <0>;  // 關閉數位濾波器
 	};
 
 	tmp451_1: tmp451_1@49 {
-		// compatible = "ti,tmp451";
-		compatible = "i2c-device";
+		compatible = "ti,tmp451";
 		reg = <0x49>;
+		alert-therm2-mode; 			 // 配置為 ALERT 輸出
+        conversion-rate = <8>;       // 16 conversions/sec
+        digital-filter-level = <0>;  // 關閉數位濾波器
 	};
 };

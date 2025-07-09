@@ -1,0 +1,6 @@
+
+menu "MCHP EC"
+
+rsource "sensor/Kconfig"
+
+endmenu

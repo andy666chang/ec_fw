@@ -1,0 +1,2 @@
+
+add_subdirectory_ifdef(CONFIG_SENSOR_TMP451 tmp451)
