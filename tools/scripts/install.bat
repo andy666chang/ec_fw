@@ -15,4 +15,4 @@ west update
 
 west zephyr-export
 
-pip install -r zephyr\scripts\requirements.txt
+pip install -r zephyr_3.7.0\zephyr_kernel\scripts\requirements.txt

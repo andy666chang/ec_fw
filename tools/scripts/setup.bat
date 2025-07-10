@@ -3,9 +3,9 @@ call .venv\Scripts\activate.bat
 
 set ZES_ENABLE_SYSMAN=1
 set ZEPHYR_TOOLCHAIN_VARIANT=zephyr
-set ZEPHYR_SDK_INSTALL_DIR=C:\Users\Andy\Desktop\app_mplab\zephyr-sdk-0.17.0
-set WORKSPACE=%cd%
 
+set WORKSPACE=%cd%
+set ZEPHYR_SDK_INSTALL_DIR=%WORKSPACE%\zephyr-sdk-0.17.0
 set MEC172X_SPI_GEN=%WORKSPACE%\tools\CPGZephyrDocs\MEC172x\SPI_image_gen\mec172x_spi_gen_win.exe
 set EC_IMG_GEN=%WORKSPACE%\tools\spi_image_trim_out\generating_binaries.py
 @REM set PATH=%PATH%;C:\Program Files (x86)\DediProg\SF Programmer
