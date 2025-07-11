@@ -14,7 +14,7 @@
 
 / {
 	model = "NV_N1X_YUKON";
-	compatible = "microchip,nv_n1x_yukon","microchip,mec172xnsz";
+	compatible = "microchip,nv_n1c_tango","microchip,mec172xnsz";
 
 	chosen {
 		zephyr,sram = &sram0;
@@ -69,6 +69,17 @@
 			gpios = <MCHP_GPIO_DECODE_142 GPIO_ACTIVE_HIGH>;
 		};
 	};
+
+	pwr-rail {
+		compatible = "gpio-leds";
+		ao_5v_pg: ao_5v_pg {
+				gpios = <MCHP_GPIO_DECODE_043 GPIO_ACTIVE_HIGH>;
+			};
+	};
+};
+
+&flash0 {
+	reg = < 0xc8000 0x58000 >;
 };
 
 &cpu0 {
