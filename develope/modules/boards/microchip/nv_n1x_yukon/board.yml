@@ -1,5 +1,5 @@
-board:
-  name: nv_n1x_yukon
+boards:
+- name: nv_n1x_yukon
   vendor: microchip
   socs:
     - name: mec172x_nsz
@@ -10,3 +10,14 @@ board:
     revisions:
     - name: b00
     - name: b01
+- name: nv_n1c_tango
+  vendor: microchip
+  socs:
+    - name: mec172x_nsz
+  revision:
+    format: custom
+    default: a00
+    exact: true
+    revisions:
+    - name: a00
+    - name: a01
