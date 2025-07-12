@@ -16,6 +16,12 @@
 	model = "NV_N1X_YUKON";
 	compatible = "microchip,nv_n1c_tango","microchip,mec172xnsz";
 
+	/delete-node/ flash@c0000;
+
+	flash0: flash@c8000 {
+		reg = < 0xc8000 0x58000 >;
+	};
+
 	chosen {
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
@@ -76,10 +82,6 @@
 				gpios = <MCHP_GPIO_DECODE_043 GPIO_ACTIVE_HIGH>;
 			};
 	};
-};
-
-&flash0 {
-	reg = < 0xc8000 0x58000 >;
 };
 
 &cpu0 {
