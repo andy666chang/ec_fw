@@ -56,14 +56,14 @@ struct app_event_subscriber {
     } while (0)
 
 #define APP_EVENT_LISTENER(mname, handler_fn)                                  \
-    static const app_event_listener_t _##mname##_app_event_listener = {                \
+    static const app_event_listener_t _##mname##_app_event_listener = {        \
         .name = #mname,                                                        \
         .notification = handler_fn,                                            \
     }
 
 #define APP_EVENT_SUBSCRIBE(mname, ename)                                      \
     STRUCT_SECTION_ITERABLE(app_event_subscriber,                              \
-                            _##mname##_app_event_subscriber) = {               \
+                            _##ename##_##mname##_app_event_subscriber) = {     \
         .listener = &_##mname##_app_event_listener,                            \
         .type = &ename##_type,                                                 \
     }
