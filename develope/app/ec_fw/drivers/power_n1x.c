@@ -39,8 +39,9 @@ MCHP_GPIO_DECLARE(vtr2_thermtrip);
 
 static int _power_off(k_timeout_t delay);
 
-int power_on(void) {
+int power_on(void *obj) {
     int ret = 0;
+    (void)obj;
 
     LOG_WRN("Run power on sequence: %s", CONFIG_BOARD);
 
@@ -102,8 +103,9 @@ int power_on(void) {
     return ret;
 }
 
-int power_off(void) {
+int power_off(void *obj) {
     int ret = 0;
+    (void)obj;
 
     LOG_WRN("%s start", __func__);
 
@@ -181,6 +183,17 @@ static int _power_off(k_timeout_t delay) {
 
     /* 20: wait EC_AO1V8_AO1V2_PG low */
     MCHP_GPIO_WAIT(&ao_1v8_1v2_pg, 0);
+
+    return ret;
+}
+
+int power_handler(void *obj) {
+    int ret = 0;
+    (void)obj;
+
+    LOG_WRN("Power handler called");
+
+
 
     return ret;
 }

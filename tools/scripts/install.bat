@@ -5,10 +5,14 @@ call .venv\Scripts\activate.bat
 
 pip install west
 
-west init zephyr_3.7.0 --mr v3.7.0
-cd zephyr_3.7.0
+@REM west init zephyr_3.7.0 --mr v3.7.0
+@REM cd zephyr_3.7.0
+
+cd tools
+west init -l
+cd ..
 west update
 
 west zephyr-export
 
-pip install -r zephyr\scripts\requirements.txt
+pip install -r zephyr_3.7.0\zephyr_kernel\scripts\requirements.txt
