@@ -1,11 +1,6 @@
 # Copyright (c) 2024 Microchip Technology Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-if BOARD_NV_N1X_YUKON
-
-config BOARD
-	default "nv_n1x_yukon"
-
 if RTOS_TIMER
 
 # XEC RTOS timer HW frequency is fixed at 32768 Hz.
@@ -39,5 +34,3 @@ endif # RTOS_TIMER
 config TACH_XEC
 	default y
 	depends on SENSOR
-
-endif # BOARD_NV_N1X_YUKON_B00

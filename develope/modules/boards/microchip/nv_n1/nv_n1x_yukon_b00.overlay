@@ -1,0 +1,67 @@
+
+/ {
+	pins {
+		compatible = "gpio-leds";
+
+		pwr_btn_0: pwr_btn_0 {
+            gpios = <&gpio_140_176 18 GPIO_ACTIVE_HIGH>;
+			label = "Power button 0";
+        };
+
+		wake_sci: wake_sci {
+			gpios = <MCHP_GPIO_DECODE_052 GPIO_ACTIVE_HIGH>;
+		};
+
+		kbc_caps_lock: kbc_caps_lock {
+			gpios = <MCHP_GPIO_DECODE_062 GPIO_ACTIVE_HIGH>;
+		};
+
+		cam_lid_close: cam_lid_close {
+			gpios = <MCHP_GPIO_DECODE_067 GPIO_ACTIVE_HIGH>;
+		};
+
+		cam_plt_rst: cam_plt_rst {
+			gpios = <MCHP_GPIO_DECODE_064 GPIO_ACTIVE_HIGH>;
+		};
+
+		s4_led: s4_led {
+			gpios = <MCHP_GPIO_DECODE_141 GPIO_ACTIVE_HIGH>;
+		};
+
+		ms_led: ms_led {
+			gpios = <MCHP_GPIO_DECODE_145 GPIO_ACTIVE_HIGH>;
+		};
+
+		cam0_active: cam0_active {
+			gpios = <MCHP_GPIO_DECODE_153 GPIO_ACTIVE_HIGH>;
+		};
+
+		s0_led: s0_led {
+			gpios = <MCHP_GPIO_DECODE_165 GPIO_ACTIVE_HIGH>;
+		};
+
+		rtc_en: rtc_en {
+			gpios = <MCHP_GPIO_DECODE_101 GPIO_ACTIVE_HIGH>;
+		};
+	};
+
+};
+
+&pcr {
+	// xtal-single-ended;
+	// internal-osc-disable;
+
+	/* debug only, not using 32KHZ_IN pin */
+	// pinctrl-0 = <&tst_clk_out_gpio060 &clk_32khz_out_gpio221>;
+	pinctrl-0 = <&tst_clk_out_gpio060>;
+
+	/* 32KHZ_IN is a clock source and no debug */
+	/* pinctrl-0 = <&clk_32khz_in_gpio165>; */
+
+	/* 32KHZ_IN is a clock source with debug */
+	/* pinctrl-0 = <&clk_32khz_in_gpio165
+			&tst_clk_out_gpio060
+			&clk_32khz_out_gpio221>;
+	*/
+	pinctrl-names = "default";
+};

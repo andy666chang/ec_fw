@@ -2,18 +2,18 @@
  * @Author: andy.chang 
  * @Date: 2025-07-01 02:46:45 
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-07-03 15:23:15
+ * @Last Modified time: 2025-07-13 02:52:05
  */
 
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
-#include <interfaces/power.h>
+#include <interface/power.h>
+#include <interface/system.h>
+
 #include <drivers/pwr_btn.h>
 
 LOG_MODULE_REGISTER(power, LOG_LEVEL_INF);
-
-APP_EVENT_TYPE_DEFINE(system_event);
 
 #define STACKSIZE 1024
 #define PRIORITY 7

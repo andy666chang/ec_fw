@@ -154,8 +154,10 @@ static int _power_off(k_timeout_t delay) {
     /* 10: write EC_PR3V3_EN low */
     MCHP_GPIO_SET(&ao_pr3v3_en, 0);
 
+    #ifndef CONFIG_BOARD_NV_N1C_TANGO
     /* 11: wait EC_AOVCC5V_PG low */
     MCHP_GPIO_WAIT(&ao_5v_pg, 0);
+    #endif
 
     /* 12: wait EC_VUSB_5V_TPC_PG low */
     MCHP_GPIO_WAIT(&vusb_5v_tpc_pg, 0);
@@ -163,9 +165,12 @@ static int _power_off(k_timeout_t delay) {
     /* 13: wait EC_PR3V3_PG low */
     MCHP_GPIO_WAIT(&ao_pr3v3_pg, 0);
 
+    #ifndef CONFIG_BOARD_NV_N1C_TANGO
     /* 14: wait VIO_12_USB2_VDD1_EN low */
     MCHP_GPIO_WAIT(&vio12_usb2_vdd1_en, 0);
+    #endif
 
+    #ifndef CONFIG_BOARD_NV_N1C_TANGO
     /* 15: wait EC_VIO_12_USB2_VDD1_PG low */
     MCHP_GPIO_WAIT(&vio12_usb2_vdd1_pg, 0);
 
@@ -174,6 +179,7 @@ static int _power_off(k_timeout_t delay) {
 
     /* 17: wait VIO_18_VDD2L_EN low */
     MCHP_GPIO_WAIT(&vio18_vdd2l_en, 0);
+    #endif
 
     /* 18: wait EC_VIO_18_VDD2L_PG low */
     MCHP_GPIO_WAIT(&vio18_vdd2l_pg, 0);

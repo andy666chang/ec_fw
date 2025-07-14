@@ -2,7 +2,7 @@
 # BOARD_REVISION 是使用者輸入的版本 (via west build -b nv_n1x_yukon@b00)
 
 # 所有合法版本
-set(SUPPORTED_REVISIONS b00 b01)
+set(SUPPORTED_REVISIONS b00 b01 a00 a01)
 
 # 驗證 revision 是否存在
 list(FIND SUPPORTED_REVISIONS ${BOARD_REVISION} index)

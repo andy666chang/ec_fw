@@ -2,15 +2,15 @@
  * @Author: andy.chang 
  * @Date: 2025-07-01 02:46:45 
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-07-02 00:55:52
+ * @Last Modified time: 2025-07-13 02:51:42
  */
 
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
 #include <drivers/tmp451.h>
-#include <interfaces/power.h>
-#include <interfaces/thermal.h>
+#include <interface/system.h>
+#include <interface/thermal.h>
 
 LOG_MODULE_REGISTER(thermal, LOG_LEVEL_INF);
 

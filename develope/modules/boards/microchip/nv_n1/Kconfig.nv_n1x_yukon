@@ -4,3 +4,6 @@
 config BOARD_NV_N1X_YUKON
 	bool "NVDIA MEC1723 N1X YUKON board"
 	select SOC_MEC172X_NSZ
+
+config BOARD
+	default "nv_n1x_yukon"

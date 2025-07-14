@@ -13,9 +13,13 @@ if(MEC172X_SPI_GEN STREQUAL MEC172X_SPI_GEN-NOTFOUND)
   message(WARNING "Microchip SPI Image Generation tool is not available. SPI Image will not be generated.")
 endif()
 
-if (NOT DEFINED MEC172X_SPI_CFG)
-  set(MEC172X_SPI_CFG $ENV{MEC172X_SPI_CFG})
+# Separate the spi_cfg directory from the board
+if (CONFIG_BOARD STREQUAL "nv_n1c_tango")
+  set(MEC172X_SPI_CFG ${BOARD_DIR}/support/mec162x/spi_cfg_8MBit.txt)
+else()
+  set(MEC172X_SPI_CFG ${BOARD_DIR}/support/mec172x/spi_cfg_8MBit.txt)
 endif()
+
 find_file (MEC172X_SPI_CFG NAMES spi_cfg_8MBit.txt spi_cfg_512MBit.txt spi_cfg_4MBit.txt spi_cfg_128MBit.txt spi_cfg.txt PATHS ${BOARD_DIR}/support)
 if(MEC172X_SPI_CFG STREQUAL MEC172X_SPI_CFG-NOTFOUND)
   message(WARNING "Microchip SPI Image Generation tool configuration file is not available. SPI Image will not be generated.")
