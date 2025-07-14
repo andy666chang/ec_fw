@@ -45,6 +45,12 @@
 		};
 	};
 
+	pwr_btn_vci: pwr_btn_vci {
+		compatible = "vnd,pinctrl-device";
+		pinctrl-0 = <&gpio161_gpio161>;
+		pinctrl-names = "default";
+		status = "okay";
+	};
 };
 
 &pcr {

@@ -2,7 +2,7 @@
  * @Author: andy.chang 
  * @Date: 2025-07-03 15:07:46 
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-07-03 15:20:22
+ * @Last Modified time: 2025-07-15 02:29:47
  */
 
 #include <errno.h>
@@ -57,11 +57,21 @@ static void pwr_btn_callback(const struct device *dev, struct gpio_callback *cb,
 }
 
 #include <zephyr/init.h>
+#include <zephyr/drivers/pinctrl.h>
 
 static int init_config(void) {
     int ret = 0;
 
     LOG_INF("Initializing pwr_btn configuration...");
+
+    PINCTRL_DT_DEFINE(DT_NODELABEL(pwr_btn_vci));
+    const struct pinctrl_dev_config *pwr_btn_pcfg =
+        PINCTRL_DT_DEV_CONFIG_GET(DT_NODELABEL(pwr_btn_vci));
+    ret = pinctrl_apply_state(pwr_btn_pcfg, PINCTRL_STATE_DEFAULT);
+    if (ret < 0) {
+        LOG_ERR("Failed to apply pinctrl state: %d", ret);
+        return ret;
+    }
 
     // Initial peripherial
     if (!device_is_ready(pwr_btn0.port)) {
