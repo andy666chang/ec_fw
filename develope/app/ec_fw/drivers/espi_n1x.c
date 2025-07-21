@@ -228,3 +228,17 @@ int app_espi_init(void) {
 
     return 0;
 }
+
+#include <zephyr/init.h>
+
+static int init_config(void) {
+    int ret = 0;
+
+    LOG_INF("Initializing eSPI configuration...");
+
+    ret = app_espi_init();
+
+    return ret;
+}
+
+SYS_INIT(init_config, APPLICATION, 0);
