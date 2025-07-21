@@ -17,9 +17,8 @@
 	compatible = "microchip,nv_n1c_tango","microchip,mec172xnsz";
 
 	/delete-node/ flash@c0000;
-
 	flash0: flash@c8000 {
-		reg = < 0xc8000 0x58000 >;
+		reg = < 0xc8000 0x48000 >;
 	};
 
 	chosen {

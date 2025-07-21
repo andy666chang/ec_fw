@@ -2,13 +2,15 @@
  * @Author: andy.chang
  * @Date: 2025-07-13 03:18:50
  * @Last Modified by: andy.chang
- * @Last Modified time: 2025-07-13 03:47:56
+ * @Last Modified time: 2025-07-19 16:51:25
  */
 
 #include <errno.h>
 #include <zephyr/drivers/espi.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
+
+#include <interface/espi.h>
 
 #define ESPI_FREQ_20MHZ 20u
 #define ESPI_FREQ_25MHZ 25u
@@ -22,6 +24,11 @@
 #define EVENT_DETAILS(x)   ((x & EVENT_DETAILS_MASK) >> EVENT_DETAILS_POS)
 
 LOG_MODULE_REGISTER(espi_n1x, LOG_LEVEL_INF);
+
+APP_EVENT_TYPE_DEFINE(espi_rst_event);
+APP_EVENT_TYPE_DEFINE(espi_ch_event);
+APP_EVENT_TYPE_DEFINE(espi_vwire_event);
+APP_EVENT_TYPE_DEFINE(espi_periph_event);
 
 static const struct device *const espi_dev = DEVICE_DT_GET(DT_NODELABEL(espi0));
 static struct espi_callback espi_bus_cb;
@@ -64,6 +71,11 @@ static void espi_reset_handler(const struct device *dev,
     if (event.evt_type == ESPI_BUS_RESET) {
         espi_rst_sts = event.evt_data;
         LOG_INF("eSPI BUS reset %d", event.evt_data);
+
+        struct espi_rst_event evt;
+        espi_rst_event_init(&evt);
+        evt.data = event.evt_data;
+        APP_EVENT_SUBMIT(evt);
     }
 }
 
@@ -84,6 +96,12 @@ static void espi_ch_handler(const struct device *dev, struct espi_callback *cb,
         default:
             LOG_ERR("Unknown channel event");
         }
+
+        struct espi_ch_event evt;
+        espi_ch_event_init(&evt);
+        evt.ch = event.evt_details;
+        evt.data = event.evt_data;
+        APP_EVENT_SUBMIT(evt);
     }
 }
 
@@ -105,6 +123,12 @@ static void vwire_handler(const struct device *dev, struct espi_callback *cb,
             host_warn_handler(event.evt_details, event.evt_data);
             break;
         }
+
+        struct espi_vwire_event evt;
+        espi_vwire_event_init(&evt);
+        evt.vwire = event.evt_details;
+        evt.data = event.evt_data;
+        APP_EVENT_SUBMIT(evt);
     }
 }
 
@@ -128,6 +152,13 @@ static void periph_handler(const struct device *dev, struct espi_callback *cb,
     default:
         LOG_INF("%s periph 0x%x [%x]", __func__, periph_type, event.evt_data);
     }
+
+    struct espi_periph_event evt;
+    espi_periph_event_init(&evt);
+    evt.type = periph_type;
+    evt.index = periph_index;
+    evt.data = event.evt_data;
+    APP_EVENT_SUBMIT(evt);
 }
 
 int app_espi_init(void) {

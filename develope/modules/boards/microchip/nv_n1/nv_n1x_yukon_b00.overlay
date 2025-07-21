@@ -1,5 +1,21 @@
 
 / {
+	/delete-node/ flash@c0000;
+
+	flash0: flash@c0000 {
+		reg = < 0xc0000 0x57000 >;
+	};
+
+	srambar0: memory@117000 {
+		compatible = "mmio-sram";
+		reg = < 0x117000 0x500 >;
+	};
+
+	srambar1: memory@117500 {
+		compatible = "mmio-sram";
+		reg = < 0x117500 0x500 >;
+	};
+
 	pins {
 		compatible = "gpio-leds";
 
@@ -44,7 +60,6 @@
 			gpios = <MCHP_GPIO_DECODE_101 GPIO_ACTIVE_HIGH>;
 		};
 	};
-
 };
 
 &pcr {
