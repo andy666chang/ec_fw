@@ -112,3 +112,37 @@ static int init(void) {
 }
 
 SYS_INIT(init, APPLICATION, 0);
+
+
+static uintptr_t vci_regbase = DT_REG_ADDR(DT_NODELABEL(vci0));
+static int vci_config(void) {
+    struct vci_regs *VCI_REGS = (struct vci_regs *)vci_regbase;
+
+	LOG_INF("VCI_REGS->CONFIG: 0x%08x", VCI_REGS->CONFIG);
+
+    // Enable FW control & Set VOUT2 to HIGH
+    VCI_REGS->CONFIG |= MCHP_VCI_FW_CTRL_EN;
+	VCI_REGS->CONFIG |= MCHP_VCI_FW_EXT_SEL;
+
+	LOG_INF("VCI_REGS->CONFIG: 0x%08x", VCI_REGS->CONFIG);
+
+    return 0;
+}
+
+SYS_INIT(vci_config, PRE_KERNEL_1, 0);
+
+/* Set bits 0,1 and 2 to enable BGPO0, BGPO1 and BGPO2 */
+#define BGPO_EN_MASK 0x7U
+/* Set bits 0-4 to enable BGPO0-BGPO5 */
+#define BGPO_EN_MASK 0x3FU
+static uintptr_t wktmr_regbase = DT_REG_ADDR(DT_NODELABEL(weektmr0));
+static int bgpo_disable(void) {
+    struct wktmr_regs *regs = (struct wktmr_regs *)wktmr_regbase;
+
+    uint32_t data = regs->BGPO_PWR;
+    /* Clear mask to disable BGPO */
+    data &= ~(BGPO_EN_MASK);
+    regs->BGPO_PWR = data;
+}
+
+SYS_INIT(bgpo_disable, PRE_KERNEL_1, 0);
